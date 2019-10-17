@@ -10,7 +10,7 @@ script:
 
 after_success:
   - docker build -t tpettigrew/multi-client ./client
-  - docker build -t tpettgirew/multi-nginx ./nginx
+  - docker build -t tpettigrew/multi-nginx ./nginx
   - docker build -t tpettigrew/multi-server ./server
   - docker build -t tpettigrew/multi-worker ./worker
   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
