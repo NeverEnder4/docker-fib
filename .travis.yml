@@ -1,0 +1,20 @@
+sudo: required
+services:
+  - docker
+
+before_install:
+  - docker build -t tpettigrew/react-test -f ./client/Dockerfile.dev ./client
+
+script:
+  - docker run -e CI=true tpettigrew/react-test npm test
+
+after_success:
+  - docker build -t tpettigrew/multi-client ./client
+  - docker build -t tpettgirew/multi-nginx ./nginx
+  - docker build -t tpettigrew/multi-server ./server
+  - docker build -t tpettigrew/multi-worker ./worker
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+  - docker push tpettigrew/multi-client
+  - docker push tpettigrew/multi-nginx
+  - docker push tpettigrew/multi-server
+  - docker push tpettigrew/multi-worker
